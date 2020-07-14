@@ -6,4 +6,10 @@
 
 #greeting-container {
   margin-top: 20px;
+  border:3px solid green;
+}
+
+#quote-container {
+  margin-top: 20px;
+  border:3px solid green;
 }

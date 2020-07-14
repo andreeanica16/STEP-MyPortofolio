@@ -26,3 +26,18 @@ function addRandomGreeting() {
   const greetingContainer = document.getElementById('greeting-container');
   greetingContainer.innerText = greeting;
 }
+
+function randomQuote() {
+    const quotes = [
+        "To define is to limit.",
+        "I could easily forgive his pride,\
+         if he had not mortified mine.",
+        "But how could you live and have no story to tell?",
+        "If you look for perfection, you'll never be content."
+    ];
+
+    const quote = quotes[Math.floor(Math.random() * quotes.length)];
+
+    const quoteContainer = document.getElementById('quote-container');
+    quoteContainer.innerText = quote;
+}
