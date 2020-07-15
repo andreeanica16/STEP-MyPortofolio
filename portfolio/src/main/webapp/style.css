@@ -18,6 +18,24 @@
     color: #444;
     text-decoration: underline;
 }
+.module-space {
+    background-color: white;
+    height: 32px; 
+}
 
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  height: 300px;
+  grid-gap: 10px;
+  padding: 10px;
+}
+
+.grid-container > div {
+  text-align: center;
+  padding: 20px 0;
+  font: 15px courier;
+  overflow: auto;
+}
 
 
