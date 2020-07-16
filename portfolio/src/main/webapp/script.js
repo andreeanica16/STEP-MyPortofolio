@@ -15,32 +15,7 @@
 /**
  * Adds a random greeting to the page.
  */
-function addRandomGreeting() {
-  const greetings =
-      ['Hello world!', '¡Hola Mundo!', '你好，世界！', 'Bonjour le monde!'];
 
-  // Pick a random greeting.
-  const greeting = greetings[Math.floor(Math.random() * greetings.length)];
-
-  // Add it to the page.
-  const greetingContainer = document.getElementById('greeting-container');
-  greetingContainer.innerText = greeting;
-}
-
-function randomQuote() {
-    const quotes = [
-        "To define is to limit.",
-        "I could easily forgive his pride,\
-         if he had not mortified mine.",
-        "But how could you live and have no story to tell?",
-        "If you look for perfection, you'll never be content."
-    ];
-
-    const quote = quotes[Math.floor(Math.random() * quotes.length)];
-
-    const quoteContainer = document.getElementById('quote-container');
-    quoteContainer.innerText = quote;
-}
 /*
     Define the background and the characteristics of the
      main canvas on the page
@@ -76,7 +51,82 @@ function randomQuote() {
      ctx.fillText("PORTOFOLIO", c.width/2  , c.height/3 + 50);
  }
 
+/*
+    Function called when the homepage is loaded
+*/
  function initBody() {
      formatCanvas();
      addTextOnCanvas();
+ }
+
+ function GalleryElement(image, text) {
+     this.image = image;
+     this.text = text;
+ }
+
+ GalleryElement.prototype.placeOnPage = function(index) {
+     var div = document.getElementById("item" + index);
+
+     var images = div.getElementsByTagName("img");
+
+     if (images.length === 0) {
+         var img = document.createElement("IMG");
+     } else {
+         var img = images[0];
+     }
+     img.setAttribute("src", this.image);
+     img.setAttribute("style", "max-width:90%;max-height:90%");
+
+     if (images.length === 0) {
+         div.appendChild(img);
+     }
+     
+     if (this.lastTextNode !== undefined) {
+         this.lastTextNode.parentNode.removeChild(this.lastTextNode);
+     }
+
+     var textnode = document.createTextNode(this.text);
+     this.lastTextNode = textnode;
+     div.appendChild(textnode);
+ }
+
+
+ const nrElemsDisplayed = 4;
+ const text = ["I love skiing during winter", 
+                "Summer is all about music festivals",
+                "Rome is my favourite city!",
+                "My beautiful homeland",
+                "Travelling in my country",
+                "This is my little sister"];
+ /*
+    Creates the collection of elements and store them in 
+    allGalleryElements
+ */
+ let allGalleryELements = [];
+ for (var i = 0; i < text.length; i++) {
+     let elem = new GalleryElement("images/img" + i + ".jpg", text[i]);
+     allGalleryELements.push(elem);
+ }
+
+//Memorize the first picture to be displayed
+ let currNumber = 0;
+
+ function displayGalleryElements() {
+     for (var i = 0; i < nrElemsDisplayed; i++) {
+         allGalleryELements[(currNumber + i) % allGalleryELements.length].placeOnPage(i + 1);
+     }
+ }
+
+ function forwardButton() {
+     currNumber = (currNumber + 1) % allGalleryELements.length;
+     displayGalleryElements();
+ }
+ 
+ function backwardsButton() {
+     if (currNumber == 0) {
+         currNumber = allGalleryELements.length - 1;
+     } else {
+         currNumber--;
+     }
+     displayGalleryElements();
  }

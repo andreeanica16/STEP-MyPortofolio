@@ -31,7 +31,7 @@
   padding: 10px;
 }
 
-.grid-container > div {
+div > div {
   text-align: center;
   padding: 20px 0;
   font: 15px courier;
@@ -39,9 +39,69 @@
   background-color: white;
 }
 
+.grid-gallery {
+  display: grid;
+  grid-template-columns: 0.4fr  repeat(4, minmax(0, 1fr)) 0.4fr;
+  height: 300px;
+  grid-gap: 10px;
+  padding: 10px;
+}
+
+.grid-gallery div {
+  display: flex;
+  flex-direction:column;
+  justify-content: center;
+  align-items:center;
+}
+
+.grid-gallery img {
+    max-height: 70%;
+    max-width: 50%;
+}
+
+
 a > img {
     max-width:60%;
     max-height:100%
+}
+
+div .btn {
+    cursor: pointer;
+    box-shadow: 0 1px 1.5px 0 rgba(0,0,0,.12), 0 1px 1px 0 rgba(0,0,0,.24);
+    background-color: rgba(255,255,255,.75);
+    border: 0;
+    border-radius: 50%;
+    color: rgb(141, 140, 140);
+    display: inline-block;
+    font-weight: 400;
+    height: 65px;
+    line-height: normal;
+    padding: 0;
+    position: absolute;
+    top: 35%;
+    text-align: center;
+    width: 65px;
+    opacity: 0.7;
+
+}
+#left {
+    position:absolute;
+    left: 10%;
+}
+
+#right {
+    position:absolute;
+    right: 10%;
+}
+
+div .btn:hover {
+    opacity:1;
+}
+
+div .btn:focus {
+    border: 1px solid ;
+    border-color:blue;
+    outline:none;
 }
 
 

@@ -6,10 +6,19 @@
     <link rel="stylesheet" href="style.css">
     <script src="script.js"></script>
   </head>
-  <body>
+  <body onload="displayGalleryElements()">
    <header> 
        <p style="height:30px;background-color:lightsteelblue;color:#444;text-align:center;font:bold 15px Fira Mono, monospace;padding:5px;margin:4px;">ANDREEA's PORTOFOLIO</p>
    </header>
+   <div class="module-space"></div>
+   <div class="grid-gallery" > 
+       <div id="item0"></div>
+       <div id="item1"><button class="btn" id="left" onclick="backwardsButton()">&lt</button></div>
+       <div id="item2"></div>
+       <div id="item3"></div>
+       <div id="item4"><button class="btn" id="right" onclick="forwardButton()">&gt</button></div>
+       <div id="item5"></div>
+   </div>
    <div class="module-space"></div>
    <div class="grid-container">
        <!--<div style="background-image: url('images/myPhoto.png');  background-size: cover;"> </div>-->
@@ -33,10 +42,11 @@
         <div style="text-align:left">
             These are some cool projects I have worked on so far:
             <ul style="list-style-type: square;">
-                <li>Implementing a router, with support for ICMP, ARP and forwarding.
-                <li>Caching Model for DNS Hierarchy in C</li>
+                <li>Chess Engine for XBOARD in C++</li>
+                <li>Chatting bot based on ELIZA in Prolog</li>
+                <li>Roll the Ball in Haskell</li>
+                <li>Implementing a router, with support for ICMP, ARP and forwarding.</li>
                 <li>Triviador Game in C</li>
-                <li>Database Manipulation Program Development in C</li>
             </ul>
 
         </div>
