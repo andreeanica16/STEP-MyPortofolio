@@ -26,3 +26,57 @@ function addRandomGreeting() {
   const greetingContainer = document.getElementById('greeting-container');
   greetingContainer.innerText = greeting;
 }
+
+function randomQuote() {
+    const quotes = [
+        "To define is to limit.",
+        "I could easily forgive his pride,\
+         if he had not mortified mine.",
+        "But how could you live and have no story to tell?",
+        "If you look for perfection, you'll never be content."
+    ];
+
+    const quote = quotes[Math.floor(Math.random() * quotes.length)];
+
+    const quoteContainer = document.getElementById('quote-container');
+    quoteContainer.innerText = quote;
+}
+/*
+    Define the background and the characteristics of the
+     main canvas on the page
+*/
+ function formatCanvas() {
+     //Resize canvas
+     var c = document.getElementById("blankCanvas");
+     c.width = window.innerWidth * 3 / 4;
+     c.height = window.innerHeight * 7 / 8;
+
+     var ctx = c.getContext("2d");
+
+    
+     //Fill in with gradient
+     var grd = ctx.createRadialGradient(c.width/2, c.height/2, c.height/6, c.width/2 + 10, c.height/2 + 10, c.width/2);
+     grd.addColorStop(0, "lightsteelblue");
+     grd.addColorStop(1, "white");
+     
+     // Fill with gradient
+     ctx.fillStyle = grd;
+     ctx.fillRect(0, 0, c.width, c.height);
+ }
+
+ function addTextOnCanvas() {
+     var c = document.getElementById("blankCanvas");
+     var ctx = c.getContext("2d");
+     ctx.fillStyle = "#222";
+     ctx.font = "bold 50px Fira Mono, monospace ";
+     ctx.fillText("ANDREEA NICA", c.width/2 - 200, c.height/3);
+
+     ctx.fillStyle = "#555";
+     ctx.font = "30px Fira Mono, monospace ";
+     ctx.fillText("PORTOFOLIO", c.width/2  , c.height/3 + 50);
+ }
+
+ function initBody() {
+     formatCanvas();
+     addTextOnCanvas();
+ }

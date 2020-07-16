@@ -1,9 +1,47 @@
 #content {
-  margin-left: auto;
-  margin-right: auto;
-  width: 650px;
+  display: flex; 
+  flex-wrap: wrap;
+  align-content: center;   
+  flex-direction: column;
 }
 
-#greeting-container {
-  margin-top: 20px;
+#content a {
+    text-align:center;
+    font: bold 30px Fira Mono, monospace;
+    color: #444;
+    text-decoration: none;
 }
+
+#content a:hover {
+    text-align:center;
+    font: bold 30px Fira Mono, monospace;
+    color: #444;
+    text-decoration: underline;
+}
+.module-space {
+    background-color: white;
+    height: 32px; 
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  height: 300px;
+  grid-gap: 10px;
+  padding: 10px;
+}
+
+.grid-container > div {
+  text-align: center;
+  padding: 20px 0;
+  font: 15px courier;
+  overflow: auto;
+  background-color: white;
+}
+
+a > img {
+    max-width:60%;
+    max-height:100%
+}
+
+
