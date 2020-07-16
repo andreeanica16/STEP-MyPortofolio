@@ -36,6 +36,12 @@
   padding: 20px 0;
   font: 15px courier;
   overflow: auto;
+  background-color: white;
+}
+
+a > img {
+    max-width:60%;
+    max-height:100%
 }
 
 
