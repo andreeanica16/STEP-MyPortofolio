@@ -116,16 +116,16 @@
                 'I am passionate about art',
                 ];
  /*
-    Creates the collection of elements and store them in 
-    allGalleryElements
- */
+  * Creates the collection of elements and store them in
+  * allGalleryElements
+  */
  let allGalleryELements = [];
  for (let i = 0; i < text.length; i++) {
      let elem = new GalleryElement('images/img' + i + '.jpg', text[i]);
      allGalleryELements.push(elem);
  }
 
-//Memorize the index of the first picture to be displayed
+ //Memorize the index of the first picture to be displayed
  let currNumber = 0;
 
  function displayGalleryElements() {
