@@ -68,7 +68,7 @@ a > img {
 div .btn {
     cursor: pointer;
     box-shadow: 0 1px 1.5px 0 rgba(0,0,0,.12), 0 1px 1px 0 rgba(0,0,0,.24);
-    background-color: rgba(255,255,255,.75);
+    background-color: rgba(220, 230, 238, 0.75);
     border: 0;
     border-radius: 50%;
     color: rgb(141, 140, 140);

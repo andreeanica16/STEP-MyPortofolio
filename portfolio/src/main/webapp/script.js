@@ -66,28 +66,33 @@
 
  GalleryElement.prototype.placeOnPage = function(index) {
      var div = document.getElementById("item" + index);
+     div.innerHTML = "";
 
-     var images = div.getElementsByTagName("img");
-
-     if (images.length === 0) {
-         var img = document.createElement("IMG");
-     } else {
-         var img = images[0];
-     }
+     var img = document.createElement("IMG");
      img.setAttribute("src", this.image);
      img.setAttribute("style", "max-width:90%;max-height:90%");
-
-     if (images.length === 0) {
-         div.appendChild(img);
-     }
-     
-     if (this.lastTextNode !== undefined) {
-         this.lastTextNode.parentNode.removeChild(this.lastTextNode);
-     }
+     div.appendChild(img);
 
      var textnode = document.createTextNode(this.text);
-     this.lastTextNode = textnode;
      div.appendChild(textnode);
+
+     if (index === 1 || index === 4) {
+         var btn = document.createElement("BUTTON");
+         btn.setAttribute("class", "btn");
+
+         if (index === 1) {
+             btn.setAttribute("id", "left");
+             btn.setAttribute("onclick", "backwardsButton()");
+             btn.innerText = "<";
+         } else {
+             btn.setAttribute("id", "right");
+             btn.setAttribute("onclick", "forwardButton()");
+             btn.innerText = ">";
+         }
+
+         div.appendChild(btn);
+     }
+     
  }
 
 
