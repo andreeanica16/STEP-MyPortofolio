@@ -64,18 +64,19 @@
      this.text = text;
  }
 
- GalleryElement.prototype.placeOnPage = function(index) {
-     var div = document.getElementById("item" + index);
-     div.innerHTML = "";
-
+ function placeImageGallery(divElement, image) {
      var img = document.createElement("IMG");
-     img.setAttribute("src", this.image);
+     img.setAttribute("src", image);
      img.setAttribute("style", "max-width:90%;max-height:90%");
-     div.appendChild(img);
+     divElement.appendChild(img);
+ }
 
-     var textnode = document.createTextNode(this.text);
-     div.appendChild(textnode);
+ function placeTextGallery(divElement, text) {
+     var textnode = document.createTextNode(text);
+     divElement.appendChild(textnode);
+ }
 
+ function placeButtonGallery(divElement, index) {
      if (index === 1 || index === 4) {
          var btn = document.createElement("BUTTON");
          btn.setAttribute("class", "btn");
@@ -90,19 +91,32 @@
              btn.innerText = ">";
          }
 
-         div.appendChild(btn);
+         divElement.appendChild(btn);
      }
-     
+ }
+
+ GalleryElement.prototype.placeOnPage = function(index) {
+     var div = document.getElementById("item" + index);
+     div.innerHTML = "";
+
+     placeImageGallery(div, this.image);
+     placeTextGallery(div, this.text);
+     placeButtonGallery(div, index);
  }
 
 
  const nrElemsDisplayed = 4;
+ /*
+    Text to be used as captions for photos
+ */
  const text = ["I love skiing during winter", 
                 "Summer is all about music festivals",
                 "Rome is my favourite city!",
                 "My beautiful homeland",
                 "Travelling in my country",
-                "This is my little sister"];
+                "My escape from the city",
+                "This summer I would have visited Florence",
+                "I am passionate about art"];
  /*
     Creates the collection of elements and store them in 
     allGalleryElements
@@ -113,7 +127,7 @@
      allGalleryELements.push(elem);
  }
 
-//Memorize the first picture to be displayed
+//Memorize the index of the first picture to be displayed
  let currNumber = 0;
 
  function displayGalleryElements() {
