@@ -30,10 +30,6 @@ public class DataServlet extends HttpServlet {
   @Override
   public void init() {
     database = new ArrayList<String>();
-
-    database.add("Crime and Prejudice by Fiodor Dostoievski");
-    database.add("The Red and the Black by Stendhal");
-    database.add("In Search of Lost Time by Marcel Proust");
   }
 
   @Override
@@ -46,5 +42,13 @@ public class DataServlet extends HttpServlet {
 
     response.setContentType("application/json;");
     response.getWriter().println(json);
+  }
+
+   @Override
+  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+      String title = request.getParameter("title");
+      database.add(title);
+
+      response.sendRedirect("/information.html");
   }
 }

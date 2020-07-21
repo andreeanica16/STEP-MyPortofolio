@@ -157,12 +157,17 @@
 
  function getArray() {
      fetch('/data').then(response => response.json()).then(list => {
-         document.getElementById('bookRecommendation').innerText = 'This is what I recommend';
+         document.getElementById('bookRecommendation').innerText = 'Recommended books so far:';
          for (let i = 0; i < list.length; i++) {
-             let listElement = document.createElement('LI');
+             let listElement = document.createElement('li');
              listElement.innerText = list[i];
              document.getElementById('bookRecommendation').appendChild(listElement);
          }
 
      });
+ }
+
+ function initInformationPage() {
+     displayGalleryElements();
+     getArray();
  }
