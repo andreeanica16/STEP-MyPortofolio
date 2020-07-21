@@ -154,3 +154,15 @@
          document.getElementById('helloSpace').innerHTML = message;
      });
  }
+
+ function getArray() {
+     fetch('/data').then(response => response.json()).then(list => {
+         document.getElementById('bookRecommendation').innerText = 'This is what I recommend';
+         for (let i = 0; i < list.length; i++) {
+             let listElement = document.createElement('LI');
+             listElement.innerText = list[i];
+             document.getElementById('bookRecommendation').appendChild(listElement);
+         }
+
+     });
+ }
