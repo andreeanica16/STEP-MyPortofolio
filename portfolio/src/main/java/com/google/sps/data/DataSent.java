@@ -13,7 +13,14 @@
 // limitations under the License.
 
 package com.google.sps.data;
+import java.util.List;
 
-public final class Comment {
-    public String title;
+public final class DataSent {
+    int lengthOfDataStore;
+    List<String> list;
+
+    public DataSent(int lengthOfDataStore, List<String> list) {
+        this.lengthOfDataStore = lengthOfDataStore;
+        this.list = list;
+    }
 }

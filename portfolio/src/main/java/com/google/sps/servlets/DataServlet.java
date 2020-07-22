@@ -28,11 +28,11 @@ import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
 import com.google.sps.data.Comment;
+import com.google.sps.data.DataSent;
 
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
-  
   
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -41,17 +41,26 @@ public class DataServlet extends HttpServlet {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = datastore.prepare(query);
 
+    int nrCommentsDisplayed = Integer.parseInt(request.getParameter("nrCom"));
+
     List<String> database = new ArrayList<>();
+    int counter = 0; //Count the number of comments sent
     for (Entity entity : results.asIterable()) {
       long id = entity.getKey().getId();
       String title = (String) entity.getProperty("title");
       long timestamp = (long) entity.getProperty("timestamp");
 
       database.add(title);
+      counter++;
+      if (counter == nrCommentsDisplayed) {
+          break;
+      }
     }
 
+    DataSent toSend = new DataSent(results.countEntities(), database);
+
     Gson gson = new Gson();
-    String json = gson.toJson(database);
+    String json = gson.toJson(toSend);
 
     response.setContentType("application/json;");
     response.getWriter().println(json);
@@ -65,11 +74,10 @@ public class DataServlet extends HttpServlet {
       Entity bookComment = new Entity("Comment");
       bookComment.setProperty("title", title);
       bookComment.setProperty("timestamp", timestamp);
-
+      
       DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
       datastore.put(bookComment);
-
-
+      
       response.sendRedirect("/information.html");
   }
 }
