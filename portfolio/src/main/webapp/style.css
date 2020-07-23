@@ -5,29 +5,33 @@
   flex-direction: column;
 }
 
-#content a {
-    text-align:center;
-    font: bold 30px Fira Mono, monospace;
-    color: #444;
-    text-decoration: none;
-}
-
-#content a:hover {
-    text-align:center;
-    font: bold 30px Fira Mono, monospace;
-    color: #444;
-    text-decoration: underline;
-}
-
 header {
-    padding:5px;
+    padding:7px;
     margin:4px;
     background-color:lightsteelblue;
     height:30px;
     width:100%;
     color:#444;
-    text-align:center;
+    text-align:left;
     font:bold 15px Fira Mono, monospace;
+}
+
+header p {
+  position: relative;
+  float: right;
+  padding: 1px 140px 0 0;
+}
+
+nav {
+  overflow:hidden;
+}
+
+nav a {
+  font-family: "Google Sans",Arial,Helvetica,sans-serif;
+  font-size: 16px;
+  color: #f2f2f2;
+  padding: 14px 20px;
+  text-decoration: none;
 }
 
 .sticky {
@@ -98,12 +102,9 @@ div .btn {
     height: 65px;
     line-height: normal;
     padding: 0;
-    position: absolute;
-    top: 35%;
     text-align: center;
     width: 65px;
     opacity: 0.7;
-
 }
 #left {
     position:absolute;

@@ -55,6 +55,7 @@
  function initBody() {
      formatCanvas();
      addTextOnCanvas();
+     initInformationPage()
  }
  
  /*
