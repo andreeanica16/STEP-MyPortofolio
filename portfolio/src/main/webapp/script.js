@@ -56,6 +56,20 @@
      formatCanvas();
      addTextOnCanvas();
  }
+ 
+ /*
+  * Make the header persistent when you scroll
+  */
+ window.onscroll = function() {myFunction()};
+ function myFunction() {
+     let myHeader = document.getElementById("myHeader");
+     let sticky = myHeader.offsetTop;
+     if (window.pageYOffset > sticky) {
+         myHeader.classList.add("sticky");
+     } else {
+         myHeader.classList.remove("sticky");
+     }
+ }
 
  function GalleryElement(image, text) {
      this.image = image;

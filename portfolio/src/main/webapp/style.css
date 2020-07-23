@@ -18,6 +18,27 @@
     color: #444;
     text-decoration: underline;
 }
+
+header {
+    padding:5px;
+    margin:4px;
+    background-color:lightsteelblue;
+    height:30px;
+    width:100%;
+    color:#444;
+    text-align:center;
+    font:bold 15px Fira Mono, monospace;
+}
+
+.sticky {
+  position: fixed;
+  top: 0;
+}
+
+.sticky + div {
+  padding-top: 102px;
+}
+
 .module-space {
     background-color: white;
     height: 32px; 
