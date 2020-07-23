@@ -165,12 +165,6 @@
      displayGalleryElements();
  }
 
- function getHello() {
-     fetch('/data').then(response => response.text()).then(message => {
-         document.getElementById('helloSpace').innerHTML = message;
-     });
- }
-
  const DEFAULT_NR_COMMENTS = 10;
  let nrCommentsDisplayed = DEFAULT_NR_COMMENTS;
 

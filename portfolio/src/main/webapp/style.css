@@ -59,7 +59,8 @@ nav a {
 div > div {
   text-align: center;
   padding: 20px 0;
-  font: 15px courier;
+  font-family: "Google Sans",Arial,Helvetica,sans-serif;
+  font-size: : 20px;
   overflow: auto;
   background-color: white;
 }
@@ -67,7 +68,7 @@ div > div {
 .grid-gallery {
   display: grid;
   grid-template-columns: 0.4fr  repeat(4, minmax(0, 1fr)) 0.4fr;
-  height: 300px;
+  height: 500px;
   grid-gap: 10px;
   padding: 10px;
 }
@@ -80,7 +81,7 @@ div > div {
 }
 
 .grid-gallery img {
-    max-height: 70%;
+    max-height: 80%;
     max-width: 50%;
 }
 
@@ -126,4 +127,32 @@ div .btn:focus {
     outline:none;
 }
 
+#submitComment {
+    border-radius: 5px;
+    background-color: #f2f2f2;
+    padding: 10px;
+    display:flex;
+    justify-content: center;
+}
+
+#submitComment input[type=text], textarea {
+  width: 60%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  margin-top: 6px;
+  margin-bottom: 16px;
+  
+}
+
+#submitComment input[type=submit] {
+  background-color: #89cc8e;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  cursor: pointer;
+}
+
+#submitComment input[type=submit]:hover {
+  background-color: #45a049;
+}
 
