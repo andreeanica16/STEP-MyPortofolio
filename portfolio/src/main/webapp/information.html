@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="style.css">
     <script src="script.js"></script>
   </head>
-  <body onload="displayGalleryElements()">
+  <body onload="initInformationPage()">
    <header> 
        <p style="height:30px;background-color:lightsteelblue;color:#444;text-align:center;font:bold 15px Fira Mono, monospace;padding:5px;margin:4px;">ANDREEA's PORTOFOLIO</p>
    </header>
@@ -20,6 +20,25 @@
        <div id="item5"></div>
    </div>
    <div class="module-space"></div>
+   <div id="filter" style="display: flex;align-items: center;flex-direction: column;">
+       <form action="/data" method="POST">
+         <input type="number" id="quantity" name="quantity" min="1">
+         <label for="quantity" id="labelQuantity"></label>
+         <input type="button" value="Apply Filter" onclick="changeNrComments()">
+       </form>
+       <button onclick="deleteAllComments()">Delete All Comments</button>
+   </div>
+   <div class="comments" style="display: flex;align-items: center;flex-direction: column;">
+       <ul id="bookRecommendation"></ul>
+       <form action="/data" method="POST">
+          <fieldset>
+              <legend>Tell me which is your favourite book:</legend>
+              <input type="text"  name="title" rows="2" colomns="100" autocomplete="off"><br>
+              <input type="submit" value="Submit" name="addComment">
+          </fieldset>
+       </form>
+
+   </div>
    <div class="grid-container">
        <!--<div style="background-image: url('images/myPhoto.png');  background-size: cover;"> </div>-->
        <div></div>

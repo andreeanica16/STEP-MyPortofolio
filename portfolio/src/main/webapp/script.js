@@ -27,7 +27,8 @@
 
     
      //Fill in with gradient
-     const grd = ctx.createRadialGradient(c.width/2, c.height/2, c.height/6, c.width/2 + 10, c.height/2 + 10, c.width/2);
+     const grd = ctx.createRadialGradient(c.width/2, c.height/2, c.height/6, 
+         c.width/2 + 10, c.height/2 + 10, c.width/2);
      grd.addColorStop(0, 'lightsteelblue');
      grd.addColorStop(1, 'white');
      
@@ -147,4 +148,55 @@
          currNumber--;
      }
      displayGalleryElements();
+ }
+
+ function getHello() {
+     fetch('/data').then(response => response.text()).then(message => {
+         document.getElementById('helloSpace').innerHTML = message;
+     });
+ }
+
+ const DEFAULT_NR_COMMENTS = 10;
+ let nrCommentsDisplayed = DEFAULT_NR_COMMENTS;
+
+ function getComments() {
+     fetch('/data' + '?nrCom=' + nrCommentsDisplayed).then(response => response.json()).then(dataReceived => {
+         const bookSection = document.getElementById('bookRecommendation');
+         bookSection.innerHTML = '';
+         bookSection.innerText = 'Recommended books so far:';
+
+         let list = dataReceived.list;
+         for (let i = 0; i < list.length; i++) {
+             let listElement = document.createElement('li');
+             listElement.innerText = list[i];
+            bookSection.appendChild(listElement);
+         }
+         
+         //Show the total numbers of comments
+         let labelQuantity = document.getElementById('labelQuantity');
+         labelQuantity.innerText = 'out of ' +  dataReceived.lengthOfDataStore;
+
+         //Modify the max and value attribute for the number input
+         let numberInput = document.getElementById('quantity');
+         numberInput.max = dataReceived.lengthOfDataStore;
+         nrCommentsDisplayed = Math.min(nrCommentsDisplayed, 
+                                        dataReceived.lengthOfDataStore);
+         numberInput.value = nrCommentsDisplayed;
+     });
+ }
+
+ function initInformationPage() {
+     displayGalleryElements();
+     getComments();
+ }
+
+ function changeNrComments() {
+     const numberInput = document.getElementById('quantity');
+     nrCommentsDisplayed = numberInput.value;
+     getComments();
+ }
+
+ function deleteAllComments() {
+     let request = new Request('/delete-data', {method: 'POST'});
+     fetch(request).then(getComments);
  }
