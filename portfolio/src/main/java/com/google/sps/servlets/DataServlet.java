@@ -43,14 +43,17 @@ public class DataServlet extends HttpServlet {
 
     int nrCommentsDisplayed = Integer.parseInt(request.getParameter("nrCom"));
 
-    List<String> database = new ArrayList<>();
+    List<Comment> database = new ArrayList<>();
     int counter = 0; //Count the number of comments sent
     for (Entity entity : results.asIterable()) {
       long id = entity.getKey().getId();
-      String title = (String) entity.getProperty("username");
+      String username = (String) entity.getProperty("username");
+      String subject = (String) entity.getProperty("subject");
       long timestamp = (long) entity.getProperty("timestamp");
 
-      database.add(title);
+      Comment thisComment = new Comment(username, subject);
+
+      database.add(thisComment);
       counter++;
       if (counter == nrCommentsDisplayed) {
           break;

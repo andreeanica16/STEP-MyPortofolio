@@ -127,7 +127,7 @@ div .btn:focus {
     outline:none;
 }
 
-#submitComment {
+#submitComment,  #filter {
     border-radius: 5px;
     background-color: #f2f2f2;
     padding: 10px;
@@ -155,4 +155,55 @@ div .btn:focus {
 #submitComment input[type=submit]:hover {
   background-color: #45a049;
 }
+
+#filter input[type=button], button {
+    background-color: #78a4bd;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    cursor: pointer;
+    margin-left:12px;
+}
+
+#commentSection ul {
+    list-style-type: none;
+    display:flex;
+    justify-content:center;
+    flex-direction: column;
+    width: 75%;
+}
+
+#commentSection div {
+  border: 2px solid #ccc;
+  background-color: #eee;
+  border-radius: 5px;
+  padding: 16px;
+  margin: 16px 0;
+}
+
+#contact {
+    display: flex;
+    flex-direction:column;
+    justify-content: center;
+    align-items:center;
+    background-color: rgb(66, 90, 117);
+    height: 350px;
+}
+
+#contact div {
+  display:flex;
+  justify-content:flex-start;
+  background-color: rgb(66, 90, 117);
+  overflow:hidden;
+}
+#contact div a {
+  width:75px;
+  margin-left:-20px;
+}
+
+#contact p {
+  padding:0px;
+  margin-left:-20px;
+}
+
 

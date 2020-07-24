@@ -17,9 +17,9 @@ import java.util.List;
 
 public final class DataSent {
     int lengthOfDataStore;
-    List<String> list;
+    List<Comment> list;
 
-    public DataSent(int lengthOfDataStore, List<String> list) {
+    public DataSent(int lengthOfDataStore, List<Comment> list) {
         this.lengthOfDataStore = lengthOfDataStore;
         this.list = list;
     }

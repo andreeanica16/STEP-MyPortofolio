@@ -17,4 +17,9 @@ package com.google.sps.data;
 public final class Comment {
     public String username;
     public String subject;
+
+    public Comment(String username, String subject) {
+        this.username = username;
+        this.subject = subject;
+    }
 }

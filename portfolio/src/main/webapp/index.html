@@ -38,14 +38,8 @@
            more like myself today.
         </div>
         <div style="display:flex;align-items:center;">  
-            <a href="https://www.linkedin.com/in/andreea-nica-006927130?trk=people-guest_people_search-card&originalSubdomain=ro" title="Check out my LinkedIn Profile!">  
-               <img src="images/link.png" alt="LinkedIn logo" >      
-            </a>
         </div>
         <div style="display:flex;align-items:center;"> 
-            <a href="https://github.com/andreeanica16">
-              <img src="images/git.png" alt="GitHub logo" title="Check out my Git Profile!">
-            </a>
         </div>
         <div style="text-align:left">
             These are some cool projects I have worked on so far:
@@ -64,22 +58,35 @@
        <form action="/data" method="POST" style="width:75%">
          <fieldset >
              <legend style="font-size:20px">Add a comment:</legend>
-             <input type="text"  name="username" autocomplete="off" placeholder="Your username.."><br>
+             <input type="text"  name="username" style="font-family:monospace;" autocomplete="off" placeholder="Your username.."><br>
              <textarea id="subject" name="subject" placeholder="Write something.." style="height:170px"></textarea><br>
              <input type="submit" value="Submit" name="addComment">
          </fieldset>
         </form>
     </div>
+    <div class="module-space"></div>
+    <div id="filter">
+        <form action="/data" method="POST">
+        <input type="number" id="quantity" name="quantity" min="1">
+        <label for="quantity" id="labelQuantity"></label>
+        <input type="button" value="Apply Filter" onclick="changeNrComments()">
+        </form>
+        <button onclick="deleteAllComments()">Delete All Comments</button>
+    </div>
    <div class="comments" id="commentSection" style="display: flex;align-items: center;flex-direction: column;">
-       <div id="filter" style="display: flex;align-items: center;flex-direction: column;">
-           <form action="/data" method="POST">
-           <input type="number" id="quantity" name="quantity" min="1">
-           <label for="quantity" id="labelQuantity"></label>
-           <input type="button" value="Apply Filter" onclick="changeNrComments()">
-           </form>
-           <button onclick="deleteAllComments()">Delete All Comments</button>
+       <ul id="commentRecommendation"></ul>
+   </div>
+   <div class="module-space" style="background-color:rgb(118, 154, 184)"></div>
+   <div id="contact">
+       <p style="color:white;">Contact me</p>
+       <div>
+       <a href="https://www.linkedin.com/in/andreea-nica-006927130?trk=people-guest_people_search-card&originalSubdomain=ro" title="Check out my LinkedIn Profile!">  
+            <img src="images/link.png" alt="LinkedIn logo" >      
+        </a>
+        <a href="https://github.com/andreeanica16">
+              <img src="images/git.png" alt="GitHub logo" title="Check out my Git Profile!">
+        </a>
         </div>
-       <ul id="bookRecommendation"></ul>
    </div>
   </body>
 </html>
