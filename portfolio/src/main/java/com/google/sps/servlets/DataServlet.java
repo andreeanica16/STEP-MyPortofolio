@@ -43,14 +43,17 @@ public class DataServlet extends HttpServlet {
 
     int nrCommentsDisplayed = Integer.parseInt(request.getParameter("nrCom"));
 
-    List<String> database = new ArrayList<>();
+    List<Comment> database = new ArrayList<>();
     int counter = 0; //Count the number of comments sent
     for (Entity entity : results.asIterable()) {
       long id = entity.getKey().getId();
-      String title = (String) entity.getProperty("title");
+      String username = (String) entity.getProperty("username");
+      String subject = (String) entity.getProperty("subject");
       long timestamp = (long) entity.getProperty("timestamp");
 
-      database.add(title);
+      Comment thisComment = new Comment(username, subject);
+
+      database.add(thisComment);
       counter++;
       if (counter == nrCommentsDisplayed) {
           break;
@@ -68,16 +71,18 @@ public class DataServlet extends HttpServlet {
 
    @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-      String title = request.getParameter("title");
+      String username = request.getParameter("username");
+      String subject = request.getParameter("subject");
       long timestamp = System.currentTimeMillis();
       
       Entity bookComment = new Entity("Comment");
-      bookComment.setProperty("title", title);
+      bookComment.setProperty("username", username);
+      bookComment.setProperty("subject", subject);
       bookComment.setProperty("timestamp", timestamp);
       
       DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
       datastore.put(bookComment);
       
-      response.sendRedirect("/information.html");
+      response.sendRedirect("/index.html#commentSection");
   }
 }

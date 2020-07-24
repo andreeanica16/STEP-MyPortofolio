@@ -55,6 +55,21 @@
  function initBody() {
      formatCanvas();
      addTextOnCanvas();
+     initInformationPage()
+ }
+ 
+ /*
+  * Make the header persistent when you scroll
+  */
+ window.onscroll = function() {myFunction()};
+ function myFunction() {
+     let myHeader = document.getElementById("myHeader");
+     let sticky = myHeader.offsetTop;
+     if (window.pageYOffset > sticky) {
+         myHeader.classList.add("sticky");
+     } else {
+         myHeader.classList.remove("sticky");
+     }
  }
 
  function GalleryElement(image, text) {
@@ -150,26 +165,21 @@
      displayGalleryElements();
  }
 
- function getHello() {
-     fetch('/data').then(response => response.text()).then(message => {
-         document.getElementById('helloSpace').innerHTML = message;
-     });
- }
-
  const DEFAULT_NR_COMMENTS = 10;
  let nrCommentsDisplayed = DEFAULT_NR_COMMENTS;
 
+/*
+ * Fetch comments from the Server and display the content 
+ */
  function getComments() {
      fetch('/data' + '?nrCom=' + nrCommentsDisplayed).then(response => response.json()).then(dataReceived => {
-         const bookSection = document.getElementById('bookRecommendation');
-         bookSection.innerHTML = '';
-         bookSection.innerText = 'Recommended books so far:';
+         const commentSection = document.getElementById('commentRecommendation');
+         commentSection.innerHTML = '';
 
          let list = dataReceived.list;
          for (let i = 0; i < list.length; i++) {
-             let listElement = document.createElement('li');
-             listElement.innerText = list[i];
-            bookSection.appendChild(listElement);
+             let div = createComment(list[i]);
+             commentSection.appendChild(div);
          }
          
          //Show the total numbers of comments
@@ -183,6 +193,23 @@
                                         dataReceived.lengthOfDataStore);
          numberInput.value = nrCommentsDisplayed;
      });
+ }
+
+/*
+ * Create the html element that corresponds to a comment
+ */
+ function createComment(comment) {
+     let div = document.createElement('div');
+
+     let myH3 = document.createElement('h3');
+     myH3.innerText = comment.username;
+     div.appendChild(myH3);
+
+     let mySubject = document.createElement('p');
+     mySubject.innerText = comment.subject;
+     div.appendChild(mySubject);
+
+     return div;
  }
 
  function initInformationPage() {

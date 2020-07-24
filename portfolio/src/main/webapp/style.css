@@ -5,19 +5,44 @@
   flex-direction: column;
 }
 
-#content a {
-    text-align:center;
-    font: bold 30px Fira Mono, monospace;
-    color: #444;
-    text-decoration: none;
+header {
+    padding:7px;
+    margin:4px;
+    background-color:lightsteelblue;
+    height:30px;
+    width:100%;
+    color:#444;
+    text-align:left;
+    font:bold 15px Fira Mono, monospace;
 }
 
-#content a:hover {
-    text-align:center;
-    font: bold 30px Fira Mono, monospace;
-    color: #444;
-    text-decoration: underline;
+header p {
+  position: relative;
+  float: right;
+  padding: 1px 140px 0 0;
 }
+
+nav {
+  overflow:hidden;
+}
+
+nav a {
+  font-family: "Google Sans",Arial,Helvetica,sans-serif;
+  font-size: 16px;
+  color: #f2f2f2;
+  padding: 14px 20px;
+  text-decoration: none;
+}
+
+.sticky {
+  position: fixed;
+  top: 0;
+}
+
+.sticky + div {
+  padding-top: 102px;
+}
+
 .module-space {
     background-color: white;
     height: 32px; 
@@ -25,16 +50,25 @@
 
 .grid-container {
   display: grid;
-  grid-template-columns: repeat(6, minmax(0, 1fr));
-  height: 300px;
+  grid-template-columns: 0.5fr  minmax(0, 1fr) repeat(2, minmax(0, 0.4fr)) minmax(0, 1fr) 0.5fr;
+  height: 420px;
   grid-gap: 10px;
   padding: 10px;
 }
 
+.item2 {
+  grid-column:3 /span 2;
+  font-family: "Google Sans",Arial,Helvetica,sans-serif;
+  text-align:center;
+  font-size:100px;
+}
+
+
 div > div {
   text-align: center;
   padding: 20px 0;
-  font: 15px courier;
+  font-family: "Google Sans",Arial,Helvetica,sans-serif;
+  font-size:  x-large;
   overflow: auto;
   background-color: white;
 }
@@ -42,7 +76,7 @@ div > div {
 .grid-gallery {
   display: grid;
   grid-template-columns: 0.4fr  repeat(4, minmax(0, 1fr)) 0.4fr;
-  height: 300px;
+  height: 500px;
   grid-gap: 10px;
   padding: 10px;
 }
@@ -55,14 +89,8 @@ div > div {
 }
 
 .grid-gallery img {
-    max-height: 70%;
+    max-height: 80%;
     max-width: 50%;
-}
-
-
-a > img {
-    max-width:60%;
-    max-height:100%
 }
 
 div .btn {
@@ -77,12 +105,9 @@ div .btn {
     height: 65px;
     line-height: normal;
     padding: 0;
-    position: absolute;
-    top: 35%;
     text-align: center;
     width: 65px;
     opacity: 0.7;
-
 }
 #left {
     position:absolute;
@@ -103,5 +128,95 @@ div .btn:focus {
     border-color:blue;
     outline:none;
 }
+
+#submitComment,  #filter {
+    border-radius: 5px;
+    background-color: #f2f2f2;
+    padding: 10px;
+    display:flex;
+    justify-content: center;
+}
+
+#submitComment input[type=text], textarea {
+  width: 60%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  margin-top: 6px;
+  margin-bottom: 16px;
+  
+}
+
+#submitComment input[type=submit] {
+  background-color: #89cc8e;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  cursor: pointer;
+}
+
+#submitComment input[type=submit]:hover {
+  background-color: #45a049;
+}
+
+#filter input[type=button], button {
+    background-color: #78a4bd;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    cursor: pointer;
+    margin-left:12px;
+}
+
+#commentSection ul {
+    list-style-type: none;
+    display:flex;
+    justify-content:center;
+    flex-direction: column;
+    width: 75%;
+}
+
+#commentSection div {
+  border: 2px solid #ccc;
+  background-color: #eee;
+  border-radius: 5px;
+  padding: 16px;
+  margin: 16px 0;
+}
+
+#contact {
+    display: flex;
+    flex-direction:column;
+    justify-content: center;
+    align-items:center;
+    background-color: rgb(66, 90, 117);
+    height: 350px;
+}
+
+#contact div {
+  display:flex;
+  justify-content:flex-start;
+  background-color: rgb(66, 90, 117);
+  overflow:hidden;
+}
+#contact div a {
+  width:75px;
+  margin-left:-20px;
+}
+
+a > img {
+    max-width:60%;
+    max-height:100%
+}
+
+#contact p {
+  padding:0px;
+  margin-left:-20px;
+}
+
+#info {
+    padding-top: 50px;
+    margin-top: -50px;
+}
+
 
 
