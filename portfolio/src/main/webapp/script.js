@@ -209,6 +209,18 @@
      mySubject.innerText = comment.subject;
      div.appendChild(mySubject);
 
+     let deleteButtonElement = document.createElement('button');
+     let buttonPicture = document.createElement('img');
+     buttonPicture.src = 'images/trash.png';
+     deleteButtonElement.appendChild(buttonPicture);
+     deleteButtonElement.addEventListener('click', () => {
+         deleteComment(comment);
+         
+         // Remove the task from the DOM.
+         div.remove();
+     });
+     div.appendChild(deleteButtonElement);
+
      return div;
  }
 
@@ -226,4 +238,11 @@
  function deleteAllComments() {
      let request = new Request('/delete-data', {method: 'POST'});
      fetch(request).then(getComments);
+ }
+
+ /** Tells the server to delete the task. */
+ function deleteComment(comment) {
+     const params = new URLSearchParams();
+     params.append('id', comment.id);
+     fetch('/delete-comment', {method: 'POST', body: params}).then(getComments);
  }
