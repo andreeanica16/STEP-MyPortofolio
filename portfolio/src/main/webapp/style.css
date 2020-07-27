@@ -217,6 +217,24 @@ a > img {
     padding-top: 50px;
     margin-top: -50px;
 }
+#commentSection button  {
+    padding:5px;
+    background-color:#eee;
+    radius:10px;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    position:relative;
+    margin-top:-100%;
+    margin-left: 95%;
+  
+}
+#commentSection button:hover  {
+    background-color:#ccc;
+}
+
+#commentSection button img {
+    max-height:30px;
+}
 
 
 

@@ -15,10 +15,12 @@
 package com.google.sps.data;
 
 public final class Comment {
+    public long id;
     public String username;
     public String subject;
 
-    public Comment(String username, String subject) {
+    public Comment(long id, String username, String subject) {
+        this.id = id;
         this.username = username;
         this.subject = subject;
     }
