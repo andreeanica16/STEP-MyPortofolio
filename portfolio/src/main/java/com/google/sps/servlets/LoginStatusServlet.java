@@ -25,6 +25,7 @@ import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 import com.google.sps.data.Comment;
 import com.google.sps.data.DataSent;
+import com.google.sps.data.UserInfo;
 
 @WebServlet("/loginStatus")
 public class LoginStatusServlet extends HttpServlet {
@@ -34,8 +35,18 @@ public class LoginStatusServlet extends HttpServlet {
       UserService userService = UserServiceFactory.getUserService();
       boolean isUserLoggedIn = userService.isUserLoggedIn();
 
+      UserInfo userLoginInfo = new UserInfo(isUserLoggedIn);
+
+      if (!isUserLoggedIn) {
+          String loginUrl = userService.createLoginURL("/index.html#submitComment");
+          userLoginInfo.setLoginUrl(loginUrl);
+      } else {
+          String logoutUrl = userService.createLogoutURL("/index.html#submitComment");
+          userLoginInfo.setLogoutUrl(logoutUrl);
+      }
+
       Gson gson = new Gson();
-      String json = gson.toJson(isUserLoggedIn);
+      String json = gson.toJson(userLoginInfo);
 
       response.setContentType("application/json;");
       response.getWriter().println(json);

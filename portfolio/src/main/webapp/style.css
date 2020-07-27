@@ -24,6 +24,7 @@ header p {
 
 nav {
   overflow:hidden;
+  display: inline-block;
 }
 
 nav a {
@@ -234,6 +235,17 @@ a > img {
 
 #commentSection button img {
     max-height:30px;
+}
+
+#signIn {
+    width:75%;
+    background-color:white;
+    border: 3px solid #5794c9;
+    border-radius: 5px;
+    font-family: "Google Sans",Arial,Helvetica,sans-serif;
+    text-align:center;
+    font-size:30px;
+    padding: 10px 50px 30px 60px;
 }
 
 

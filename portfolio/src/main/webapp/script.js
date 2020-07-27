@@ -247,5 +247,30 @@
  function getLoginStatus() {
      fetch('/loginStatus')
      .then(response => response.json())
-     .then(result => console.log(result));
+     .then(showCommentForm);
+ }
+
+/**
+ * Display elements in the header and make Comment Form visible
+ * depending on the authentication status
+ */
+ function showCommentForm(userInfo) {
+     if (userInfo.isUserLoggedIn) {
+         const div = document.getElementById('submitForm');
+         div.hidden = false;
+
+         const linkHeader = document.getElementById('signOutLinkHeader');
+         linkHeader.href = userInfo.logoutUrl;
+         linkHeader.hidden = false;
+     } else {
+         const link = document.getElementById('signUpLink');
+         link.href = userInfo.loginUrl;
+
+         const div = document.getElementById('signIn');
+         div.hidden = false;
+
+         const linkHeader = document.getElementById('signInLinkHeader');
+         linkHeader.href = userInfo.loginUrl;
+         linkHeader.hidden = false;
+     }
  }
