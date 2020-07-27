@@ -55,7 +55,9 @@
  function initBody() {
      formatCanvas();
      addTextOnCanvas();
-     initInformationPage()
+     displayGalleryElements();
+     getComments();
+     getLoginStatus();
  }
  
  /*
@@ -224,11 +226,6 @@
      return div;
  }
 
- function initInformationPage() {
-     displayGalleryElements();
-     getComments();
- }
-
  function changeNrComments() {
      const numberInput = document.getElementById('quantity');
      nrCommentsDisplayed = numberInput.value;
@@ -245,4 +242,10 @@
      const params = new URLSearchParams();
      params.append('id', comment.id);
      fetch('/delete-comment', {method: 'POST', body: params}).then(getComments);
+ }
+
+ function getLoginStatus() {
+     fetch('/loginStatus')
+     .then(response => response.json())
+     .then(result => console.log(result));
  }
