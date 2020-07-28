@@ -204,8 +204,13 @@
      let div = document.createElement('div');
 
      let myH3 = document.createElement('h3');
-     myH3.innerText = comment.username;
+     myH3.innerText = comment.username ;
      div.appendChild(myH3);
+
+     let myH5 = document.createElement('h5');
+     myH5.innerText =  comment.email;
+     myH5.style = 'margin-top:-5px;'
+     div.appendChild(myH5);
 
      let mySubject = document.createElement('p');
      mySubject.innerText = comment.subject;
@@ -259,9 +264,19 @@
          const div = document.getElementById('submitForm');
          div.hidden = false;
 
+         const usernameForm = document.getElementById('usernameForm');
+         usernameForm.hidden = false;
+
          const linkHeader = document.getElementById('signOutLinkHeader');
          linkHeader.href = userInfo.logoutUrl;
          linkHeader.hidden = false;
+
+         fetch('/userInfo')
+         .then(response => response.json())
+         .then(user => {
+             const usernameInput = document.getElementById('usernameInput');
+             usernameInput.value = user.username;
+         });
      } else {
          const link = document.getElementById('signUpLink');
          link.href = userInfo.loginUrl;
@@ -273,4 +288,10 @@
          linkHeader.href = userInfo.loginUrl;
          linkHeader.hidden = false;
      }
+ }
+
+/** Function called when the user changes the username */
+ function copyValueFromUsername() {
+     document.getElementById("usernameChangeInput").value = 
+         document.getElementById("usernameInput").value;
  }

@@ -224,9 +224,9 @@ a > img {
     radius:10px;
     border: 2px solid #ccc;
     border-radius: 5px;
-    position:relative;
-    margin-top:-100%;
-    margin-left: 95%;
+    position:absolute;
+    right:20%;
+    margin-top:-90px;
   
 }
 #commentSection button:hover  {
@@ -234,7 +234,7 @@ a > img {
 }
 
 #commentSection button img {
-    max-height:30px;
+    max-height:25px;
 }
 
 #signIn {

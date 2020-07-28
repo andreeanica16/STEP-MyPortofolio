@@ -14,20 +14,14 @@
 
 package com.google.sps.data;
 
-public final class Comment {
-    public long id;
-    public String username;
-    public String subject;
-    public String email;
+public final class User {
+    String id;
+    String email;
+    String username;
 
-    public Comment(long id, String username, String subject) {
+    public User (String id, String email, String username) {
         this.id = id;
-        this.username = username;
-        this.subject = subject;
-    }
-
-    public Comment(long id, String username, String subject, String email) {
-        this(id, username, subject);
         this.email = email;
+        this.username = username;
     }
 }

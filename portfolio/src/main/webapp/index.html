@@ -59,10 +59,14 @@
        <form action="/data" method="POST" style="width:75%" id="submitForm" hidden>
          <fieldset >
              <legend style="font-size:20px">Add a comment:</legend>
-             <input type="text"  name="username" style="font-family:monospace;" autocomplete="off" placeholder="Your username.."><br>
+             <input id="usernameInput" type="text"  name="username" style="font-family:monospace;width:38%" autocomplete="off" placeholder="Your username.."><br>
              <textarea id="subject" name="subject" placeholder="Write something.." style="height:170px"></textarea><br>
              <input type="submit" value="Submit" name="addComment">
          </fieldset>
+        </form>
+        <form action="/userInfo" method="POST" onsubmit="copyValueFromUsername()" id="usernameForm" style="position:absolute;right:40%;margin-top:35px" hidden>
+            <input type="hidden" name="username" id="usernameChangeInput">
+            <input type="submit" value="Change username" name="changeUsername" style="background-color:#78a4bd">
         </form>
         <div id="signIn" hidden>
             <p>Want to share your thoughts? <a id="signUpLink" style="color:#89cc8e"> Sign up</a> to leave a comment</p>
