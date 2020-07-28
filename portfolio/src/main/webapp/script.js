@@ -58,6 +58,7 @@
      displayGalleryElements();
      getComments();
      getLoginStatus();
+     fetchBlobstoreUrlAndShowForm();
  }
  
  /*
@@ -228,6 +229,13 @@
      });
      div.appendChild(deleteButtonElement);
 
+     if (comment.imageUrl !== undefined && comment.imageUrl !== null) {
+         let image = document.createElement('img');
+         image.src = comment.imageUrl;
+         image.style = "width:60px;height:60px";
+         div.appendChild(image);
+     }
+
      return div;
  }
 
@@ -261,15 +269,9 @@
  */
  function showCommentForm(userInfo) {
      if (userInfo.isUserLoggedIn) {
-         const div = document.getElementById('submitForm');
-         div.hidden = false;
-
-         const usernameForm = document.getElementById('usernameForm');
-         usernameForm.hidden = false;
-
-         const linkHeader = document.getElementById('signOutLinkHeader');
-         linkHeader.href = userInfo.logoutUrl;
-         linkHeader.hidden = false;
+         makeFormElementVisible('submitForm');
+         makeFormElementVisible('usernameForm');
+         makeFormElementVisible('signOutLinkHeader', userInfo.logoutUrl);
 
          fetch('/userInfo')
          .then(response => response.json())
@@ -281,12 +283,17 @@
          const link = document.getElementById('signUpLink');
          link.href = userInfo.loginUrl;
 
-         const div = document.getElementById('signIn');
-         div.hidden = false;
+         makeFormElementVisible('signIn');
+         makeFormElementVisible('signInLinkHeader', userInfo.loginUrl)
+     }
+ }
 
-         const linkHeader = document.getElementById('signInLinkHeader');
-         linkHeader.href = userInfo.loginUrl;
-         linkHeader.hidden = false;
+ function makeFormElementVisible(id, link) {
+     const el = document.getElementById(id);
+     el.hidden = false;
+
+     if (link !== undefined) {
+         el.href = link;
      }
  }
 
@@ -295,3 +302,15 @@
      document.getElementById("usernameChangeInput").value = 
          document.getElementById("usernameInput").value;
  }
+
+ function fetchBlobstoreUrlAndShowForm() {
+  fetch('/blobstore-upload-url')
+      .then((response) => {
+        return response.text();
+      })
+      .then((imageUploadUrl) => {
+        const form = document.getElementById('submitForm');
+        form.action = imageUploadUrl;
+        form.classList.remove('hiddenUntilLoad');
+      });
+}

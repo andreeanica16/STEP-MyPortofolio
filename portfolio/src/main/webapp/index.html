@@ -56,11 +56,12 @@
    </div>
    <div class="module-space"></div>
    <div id="submitComment" >
-       <form action="/data" method="POST" style="width:75%" id="submitForm" hidden>
+       <form method="POST" style="width:75%" id="submitForm" enctype="multipart/form-data" class="hiddenUntilLoad" hidden>
          <fieldset >
              <legend style="font-size:20px">Add a comment:</legend>
              <input id="usernameInput" type="text"  name="username" style="font-family:monospace;width:38%" autocomplete="off" placeholder="Your username.."><br>
              <textarea id="subject" name="subject" placeholder="Write something.." style="height:170px"></textarea><br>
+             <input type="file" name="image" ><br><br>
              <input type="submit" value="Submit" name="addComment">
          </fieldset>
         </form>

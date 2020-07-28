@@ -248,5 +248,9 @@ a > img {
     padding: 10px 50px 30px 60px;
 }
 
+.hiddenUntilLoad {
+    display: none;
+}
+
 
 

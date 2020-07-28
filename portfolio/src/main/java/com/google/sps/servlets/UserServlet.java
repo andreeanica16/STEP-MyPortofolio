@@ -33,7 +33,7 @@ import com.google.sps.data.Comment;
 import com.google.sps.data.DataSent;
 import com.google.sps.data.User;
 
-/** Provides info of the current user */
+/** Manages the info of the current user */
 @WebServlet("/userInfo")
 public class UserServlet extends HttpServlet {
   
@@ -48,6 +48,7 @@ public class UserServlet extends HttpServlet {
               entity = new Entity("User", id);
               entity.setProperty("id", id);
               entity.setProperty("email", email);
+              //Set the default nickname substracting the ldap
               entity.setProperty("username", (email.split("@")[0]));
               
               DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();

@@ -27,6 +27,7 @@ import com.google.sps.data.Comment;
 import com.google.sps.data.DataSent;
 import com.google.sps.data.UserInfo;
 
+/**  Servlet responsible with giving information about the authentication status*/
 @WebServlet("/loginStatus")
 public class LoginStatusServlet extends HttpServlet {
 
