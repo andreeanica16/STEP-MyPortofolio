@@ -65,7 +65,7 @@ nav a {
 }
 
 
-div > div {
+.grid-container div, .grid-gallery div {
   text-align: center;
   padding: 20px 0;
   font-family: "Google Sans",Arial,Helvetica,sans-serif;
@@ -250,6 +250,12 @@ a > img {
 
 .hiddenUntilLoad {
     display: none;
+}
+
+#map {
+  border: thin solid black;
+  height: 500px;
+  width: 500px;
 }
 
 
