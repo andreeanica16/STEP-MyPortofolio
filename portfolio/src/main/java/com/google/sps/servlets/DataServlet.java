@@ -27,6 +27,8 @@ import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
+import com.google.appengine.api.users.UserService;
+import com.google.appengine.api.users.UserServiceFactory;
 import com.google.sps.data.Comment;
 import com.google.sps.data.DataSent;
 
@@ -47,11 +49,13 @@ public class DataServlet extends HttpServlet {
     int counter = 0; //Count the number of comments sent
     for (Entity entity : results.asIterable()) {
       long id = entity.getKey().getId();
-      String username = (String) entity.getProperty("username");
+      //String username = (String) entity.getProperty("username");
       String subject = (String) entity.getProperty("subject");
       long timestamp = (long) entity.getProperty("timestamp");
+      String email = (String) entity.getProperty("email");
+      String username = getUsername(email);
 
-      Comment thisComment = new Comment(id, username, subject);
+      Comment thisComment = new Comment(id, username, subject, email);
 
       database.add(thisComment);
       counter++;
@@ -71,18 +75,41 @@ public class DataServlet extends HttpServlet {
 
    @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-      String username = request.getParameter("username");
-      String subject = request.getParameter("subject");
-      long timestamp = System.currentTimeMillis();
+      UserService userService = UserServiceFactory.getUserService();
+
+      // Only logged-in users can submit the form
+      if (userService.isUserLoggedIn()) {
+          String username = request.getParameter("username");
+          String subject = request.getParameter("subject");
+          long timestamp = System.currentTimeMillis();
+          String email = userService.getCurrentUser().getEmail();
+          
+          Entity comment = new Entity("Comment");
+          comment.setProperty("username", username);
+          comment.setProperty("subject", subject);
+          comment.setProperty("timestamp", timestamp);
+          comment.setProperty("email", email);
+          
+          DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+          datastore.put(comment);
+          
+          response.sendRedirect("/index.html#commentSection");
+
+      }
       
-      Entity bookComment = new Entity("Comment");
-      bookComment.setProperty("username", username);
-      bookComment.setProperty("subject", subject);
-      bookComment.setProperty("timestamp", timestamp);
-      
+  }
+
+  String getUsername(String email) {
       DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-      datastore.put(bookComment);
-      
-      response.sendRedirect("/index.html#commentSection");
+      Query query =
+        new Query("User")
+            .setFilter(new Query.FilterPredicate("email", Query.FilterOperator.EQUAL, email));
+      PreparedQuery results = datastore.prepare(query);
+      Entity entity = results.asSingleEntity();
+      if (entity == null) {
+          return "";
+      }
+      String username = (String) entity.getProperty("username");
+      return username;
   }
 }
