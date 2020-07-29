@@ -65,7 +65,7 @@ nav a {
 }
 
 
-div > div {
+.grid-container div, .grid-gallery div {
   text-align: center;
   padding: 20px 0;
   font-family: "Google Sans",Arial,Helvetica,sans-serif;
@@ -246,6 +246,21 @@ a > img {
     text-align:center;
     font-size:30px;
     padding: 10px 50px 30px 60px;
+}
+
+.hiddenUntilLoad {
+    display: none;
+}
+
+#map {
+  border: thin solid black;
+  height: 500px;
+  width: 75%;
+}
+
+#outerMap {
+    display: flex;
+    justify-content: center;
 }
 
 

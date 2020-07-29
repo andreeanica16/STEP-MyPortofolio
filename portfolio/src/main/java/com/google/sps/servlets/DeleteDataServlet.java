@@ -31,6 +31,7 @@ import com.google.appengine.api.datastore.Query.SortDirection;
 import com.google.sps.data.Comment;
 import com.google.sps.data.DataSent;
 
+/** Servlet responsible with deleting all the comments */
 @WebServlet("/delete-data")
 public class DeleteDataServlet extends HttpServlet {
 

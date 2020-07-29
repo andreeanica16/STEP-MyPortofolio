@@ -53,11 +53,13 @@
  * Function called when the homepage is loaded
  */
  function initBody() {
+     createMap();
      formatCanvas();
      addTextOnCanvas();
      displayGalleryElements();
      getComments();
      getLoginStatus();
+     fetchBlobstoreUrlAndShowForm();
  }
  
  /*
@@ -228,6 +230,13 @@
      });
      div.appendChild(deleteButtonElement);
 
+     if (comment.imageUrl !== undefined && comment.imageUrl !== null) {
+         let image = document.createElement('img');
+         image.src = comment.imageUrl;
+         image.style = "width:60px;height:60px";
+         div.appendChild(image);
+     }
+
      return div;
  }
 
@@ -261,15 +270,9 @@
  */
  function showCommentForm(userInfo) {
      if (userInfo.isUserLoggedIn) {
-         const div = document.getElementById('submitForm');
-         div.hidden = false;
-
-         const usernameForm = document.getElementById('usernameForm');
-         usernameForm.hidden = false;
-
-         const linkHeader = document.getElementById('signOutLinkHeader');
-         linkHeader.href = userInfo.logoutUrl;
-         linkHeader.hidden = false;
+         makeFormElementVisible('submitForm');
+         makeFormElementVisible('usernameForm');
+         makeFormElementVisible('signOutLinkHeader', userInfo.logoutUrl);
 
          fetch('/userInfo')
          .then(response => response.json())
@@ -281,12 +284,17 @@
          const link = document.getElementById('signUpLink');
          link.href = userInfo.loginUrl;
 
-         const div = document.getElementById('signIn');
-         div.hidden = false;
+         makeFormElementVisible('signIn');
+         makeFormElementVisible('signInLinkHeader', userInfo.loginUrl)
+     }
+ }
 
-         const linkHeader = document.getElementById('signInLinkHeader');
-         linkHeader.href = userInfo.loginUrl;
-         linkHeader.hidden = false;
+ function makeFormElementVisible(id, link) {
+     const el = document.getElementById(id);
+     el.hidden = false;
+
+     if (link !== undefined) {
+         el.href = link;
      }
  }
 
@@ -295,3 +303,193 @@
      document.getElementById("usernameChangeInput").value = 
          document.getElementById("usernameInput").value;
  }
+
+ function fetchBlobstoreUrlAndShowForm() {
+  fetch('/blobstore-upload-url')
+      .then((response) => {
+        return response.text();
+      })
+      .then((imageUploadUrl) => {
+        const form = document.getElementById('submitForm');
+        form.action = imageUploadUrl;
+        form.classList.remove('hiddenUntilLoad');
+      });
+}
+
+/** Creates a map and adds it to the page. */
+function createMap() {
+  const map = new google.maps.Map(
+      document.getElementById('map'),
+      {
+          center: {lat: 47.889019, lng: 3.7831301},
+          zoom: 5,
+          styles:[
+              {
+                  "elementType": "geometry",
+                  "stylers": [{"color": "#1d2c4d"}]
+              },
+              {
+                  "elementType": "labels.text.fill",
+                  "stylers": [{"color": "#8ec3b9"}]
+              },
+              {
+                  "elementType": "labels.text.stroke",
+                  "stylers": [{"color": "#1a3646"}]
+              },
+              {
+                  "featureType": "administrative.country",
+                  "elementType": "geometry.stroke",
+                  "stylers": [{"color": "#7faa09"}, 
+                              {"visibility": "on"},
+                              {"weight": 1},
+                              ]
+              },
+              {
+                  "featureType": "administrative.country",
+                  "elementType": "labels.text.stroke",
+                  "stylers": [{"visibility": "on"}]
+              },
+              {
+                  "featureType": "administrative.land_parcel",
+                  "elementType": "labels.text.fill",
+                  "stylers": [{"color": "#64779e" }]
+              },
+              {
+                  "featureType": "administrative.province",
+                  "elementType": "geometry.stroke",
+                  "stylers": [{"color": "#4b6878"}]
+              },
+              {
+                  "featureType": "landscape.man_made",
+                  "elementType": "geometry.stroke",
+                  "stylers": [{"color": "#334e87"}]
+              },
+              {
+                  "featureType": "landscape.natural",
+                  "elementType": "geometry",
+                  "stylers": [{"color": "#023e58"}]
+              },
+              {
+                  "featureType": "poi",
+                  "elementType": "geometry",
+                  "stylers": [{"color": "#283d6a"}]
+              },
+              {
+                  "featureType": "poi",
+                  "elementType": "labels.text.fill",
+                  "stylers": [{"color": "#6f9ba5"}]
+              },
+              {
+                  "featureType": "poi",
+                  "elementType": "labels.text.stroke",
+                  "stylers": [{"color": "#1d2c4d"}]
+              },
+              {
+                  "featureType": "poi.park",
+                  "elementType": "geometry.fill",
+                  "stylers": [{"color": "#023e58"}]
+              },
+              {
+                  "featureType": "poi.park",
+                  "elementType": "labels.text.fill",
+                  "stylers": [{"color": "#3C7680"}]
+              },
+              {
+                  "featureType": "road",
+                  "elementType": "geometry",
+                  "stylers": [{"color": "#304a7d"}]
+              },
+              {
+                  "featureType": "road",
+                  "elementType": "labels.text.fill",
+                  "stylers": [{"color": "#98a5be"}]
+              },
+              {
+                  "featureType": "road",
+                  "elementType": "labels.text.stroke",
+                  "stylers": [{"color": "#1d2c4d"}]
+              },
+              {
+                  "featureType": "road.highway",
+                  "elementType": "geometry",
+                  "stylers": [{"color": "#2c6675"}]
+              },
+              {
+                  "featureType": "road.highway",
+                  "elementType": "geometry.stroke",
+                  "stylers": [ {"color": "#255763"}]
+              },
+              {
+                  "featureType": "road.highway",
+                  "elementType": "labels.text.fill",
+                  "stylers": [{"color": "#b0d5ce"}]
+              },
+              {
+                  "featureType": "road.highway",
+                  "elementType": "labels.text.stroke",
+                  "stylers": [{"color": "#023e58"}]
+              },
+              {
+                  "featureType": "transit",
+                  "elementType": "labels.text.fill",
+                  "stylers": [{"color": "#98a5be"}]
+              },
+              {
+                  "featureType": "transit",
+                  "elementType": "labels.text.stroke",
+                  "stylers": [{"color": "#1d2c4d"}]
+              },
+              {
+                  "featureType": "transit.line",
+                  "elementType": "geometry.fill",
+                  "stylers": [{"color": "#283d6a"}]
+              },
+              {
+                  "featureType": "transit.station",
+                  "elementType": "geometry",
+                  "stylers": [{"color": "#3a4762"}]
+              },
+              {
+                  "featureType": "water",
+                  "elementType": "geometry",
+                  "stylers": [{"color": "#0e1626"}]
+              },
+              {
+                  "featureType": "water",
+                  "elementType": "labels.text.fill",
+                  "stylers": [{"color": "#4e6d70"}]
+              }
+        ]            
+    });
+  map.setMapTypeId('terrain');
+
+  const romania = {lat: 45.9432, lng: 24.9668};
+  const marker = new google.maps.Marker({
+    position: romania,
+    icon: {
+            url:'http://maps.google.com/mapfiles/kml/shapes/homegardenbusiness.png',
+            size: new google.maps.Size(32, 32),
+            origin: new google.maps.Point(0, 0),
+            anchor: new google.maps.Point(0, 32),
+            scaledSize: new google.maps.Size(32, 32),
+          },
+    map: map,
+    title: 'My Home Country',
+    animation: google.maps.Animation.DROP,
+  });
+
+  const infoWindow = new google.maps.InfoWindow({
+    content: 'This is my home country',
+    maxWidth: 150
+  });
+
+  marker.addListener('click', function () {
+    if (marker.getAnimation() !== null) {
+      marker.setAnimation(null);
+    } else {
+      marker.setAnimation(google.maps.Animation.BOUNCE);
+    }
+  });
+
+  infoWindow.open(map, marker);
+}

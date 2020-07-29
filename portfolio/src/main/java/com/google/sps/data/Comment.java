@@ -19,6 +19,7 @@ public final class Comment {
     public String username;
     public String subject;
     public String email;
+    public String imageUrl;
 
     public Comment(long id, String username, String subject) {
         this.id = id;
@@ -26,8 +27,9 @@ public final class Comment {
         this.subject = subject;
     }
 
-    public Comment(long id, String username, String subject, String email) {
+    public Comment(long id, String username, String subject, String email, String imageUrl) {
         this(id, username, subject);
         this.email = email;
+        this.imageUrl = imageUrl;
     }
 }
