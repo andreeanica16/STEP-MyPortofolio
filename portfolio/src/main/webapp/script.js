@@ -493,3 +493,54 @@ function createMap() {
 
   infoWindow.open(map, marker);
 }
+
+/** Creates a chart and add it to the page */
+google.charts.load('current', {
+        'packages':['geochart'],
+        'mapsApiKey': 'AIzaSyAZHBan3dk4l3KU_pyTkSa1ohe85xNpazc'
+      });
+google.charts.setOnLoadCallback(drawChart);
+
+function drawChart() {
+  var data = google.visualization.arrayToDataTable([
+          ['Country', 'Per capita consumption in killograms'],
+          ['Switzerland', 8.8],
+          ['Austria', 8.1],
+          ['Germany', 7.9],
+          ['Ireland', 7.9],
+          ['United Kingdom', 7.6],
+          ['Sweden', 6.6],
+          ['Estonia', 6.5],
+          ['Canada', 6.1],
+          ['Norway', 5.8],
+          ['Poland', 5.7],
+          ['Belgium', 5.6],
+          ['Finland', 5.4],
+          ['Slovakia', 5.2],
+          ['The Netherlands', 5.1],
+          ['New Zealand', 5],
+          ['Denmark', 4.9],
+          ['Australia', 4.9],
+          ['Russia', 4.8],
+          ['United States', 4.4],
+          ['France', 4.3],
+          ['Greece', 2.6],
+          ['Italy', 2.4],
+          ['Spain', 2],
+          ['Brazil', 1.2],
+          ['Japan', 1.2],
+          ['Portugal', 1.1],
+          ['China', 0.1]
+        ]);
+
+  const options = {
+    'title': 'How much chocolate does we eat per year?',
+    'width':700,
+    'height':700,
+    colorAxis: {colors: ['gray', 'black']}
+  };
+
+  const chart = new google.visualization.GeoChart(
+      document.getElementById('chart-container'));
+  chart.draw(data, options);
+}
