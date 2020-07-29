@@ -478,6 +478,11 @@ function createMap() {
     animation: google.maps.Animation.DROP,
   });
 
+  const infoWindow = new google.maps.InfoWindow({
+    content: 'This is my home country',
+    maxWidth: 150
+  });
+
   marker.addListener('click', function () {
     if (marker.getAnimation() !== null) {
       marker.setAnimation(null);
@@ -485,4 +490,6 @@ function createMap() {
       marker.setAnimation(google.maps.Animation.BOUNCE);
     }
   });
+
+  infoWindow.open(map, marker);
 }
