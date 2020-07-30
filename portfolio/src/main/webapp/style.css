@@ -263,5 +263,17 @@ a > img {
     justify-content: center;
 }
 
+#outerChart {
+    display: flex;
+    justify-content: center;
+}
+
+#outerChart p {
+  font-family: "Google Sans",Arial,Helvetica,sans-serif;
+  font-size: 36px;
+  width:300px;
+}
+
+
 
 

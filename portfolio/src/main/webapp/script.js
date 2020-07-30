@@ -493,3 +493,33 @@ function createMap() {
 
   infoWindow.open(map, marker);
 }
+
+/** Creates a chart and add it to the page */
+google.charts.load('current', {
+        'packages':['geochart'],
+        'mapsApiKey': 'AIzaSyAZHBan3dk4l3KU_pyTkSa1ohe85xNpazc'
+      });
+google.charts.setOnLoadCallback(drawChart);
+
+function drawChart() {
+    fetch('/chocolate-data').then(response => response.json())
+    .then(chocolateStatistics => {
+        const data = new google.visualization.DataTable();
+        data.addColumn('string', 'Country');
+        data.addColumn('number', 'Per capita consumption in killograms');
+        Object.keys(chocolateStatistics).forEach((country) => {
+            data.addRow([country, chocolateStatistics[country]]);
+        });
+
+        const options = {
+            'title': 'How much chocolate does we eat per year?',
+            'width':700,
+            'height':700,
+            colorAxis: {colors: ['gray', 'black']}
+        };
+        
+        const chart = new google.visualization.GeoChart(
+            document.getElementById('chart-container'));
+            chart.draw(data, options);
+    });
+}
