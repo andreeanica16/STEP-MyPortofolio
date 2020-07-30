@@ -21,6 +21,7 @@ public final class Comment {
     public String email;
     public String blobKey;
     public String imageAnalyseResult;
+    public double sentiment;
 
     public Comment(long id, String username, String subject) {
         this.id = id;
@@ -29,10 +30,11 @@ public final class Comment {
     }
 
     public Comment(long id, String username, String subject, String email, String blobKey,
-                      String imageAnalyseResult) {
+                      String imageAnalyseResult, double sentiment) {
         this(id, username, subject);
         this.email = email;
         this.blobKey = blobKey;
         this.imageAnalyseResult = imageAnalyseResult;
+        this.sentiment = sentiment;
     }
 }

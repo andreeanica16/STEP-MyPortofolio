@@ -210,7 +210,7 @@
      div.appendChild(myH3);
 
      let myH5 = document.createElement('h5');
-     myH5.innerText =  comment.email;
+     myH5.innerText =  comment.email + ' ' + comment.sentiment;
      myH5.style = 'margin-top:-5px;'
      div.appendChild(myH5);
 

@@ -48,6 +48,9 @@ import com.google.cloud.vision.v1.Image;
 import com.google.cloud.vision.v1.ImageAnnotatorClient;
 import com.google.protobuf.ByteString;
 import java.io.ByteArrayOutputStream;
+import com.google.cloud.language.v1.Document;
+import com.google.cloud.language.v1.LanguageServiceClient;
+import com.google.cloud.language.v1.Sentiment;
 import com.google.sps.data.Comment;
 import com.google.sps.data.DataSent;
 
@@ -74,8 +77,10 @@ public class DataServlet extends HttpServlet {
       String username = getUsername(email);
       String blobKey = (String) entity.getProperty("blobKey");
       String imageAnalyseResult = (String) entity.getProperty("imageAnalyseResult");
+      double sentiment = (double) entity.getProperty("sentiment");
 
-      Comment thisComment = new Comment(id, username, subject, email, blobKey, imageAnalyseResult);
+      Comment thisComment = new Comment(id, username, subject, email, blobKey, 
+                                          imageAnalyseResult, sentiment);
 
       database.add(thisComment);
       counter++;
@@ -106,6 +111,7 @@ public class DataServlet extends HttpServlet {
           BlobKey blobKey = getBlobKey(request, "image");
           String blobKeyString = null;
           String imageAnalyseResult = null;
+          double sentiment = (double) getSentiment(subject);
 
           if (blobKey != null) {
               blobKeyString = blobKey.getKeyString();
@@ -119,6 +125,7 @@ public class DataServlet extends HttpServlet {
           comment.setProperty("email", email);
           comment.setProperty("blobKey", blobKeyString);
           comment.setProperty("imageAnalyseResult", imageAnalyseResult);
+          comment.setProperty("sentiment", sentiment);
           
           DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
           datastore.put(comment);
@@ -129,6 +136,17 @@ public class DataServlet extends HttpServlet {
       
   }
 
+  float getSentiment(String message) throws IOException {
+      Document doc =
+        Document.newBuilder().setContent(message).setType(Document.Type.PLAIN_TEXT).build();
+    LanguageServiceClient languageService = LanguageServiceClient.create();
+    Sentiment sentiment = languageService.analyzeSentiment(doc).getDocumentSentiment();
+    float score = sentiment.getScore();
+    languageService.close();
+
+    return score;
+  }
+  
   String getUsername(String email) {
       DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
       Query query =
