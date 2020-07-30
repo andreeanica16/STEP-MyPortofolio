@@ -239,6 +239,11 @@
              image.style = "width:60px;height:60px";
              div.appendChild(image);
          });
+
+         const imageAnalyseParahraph = document.createElement('p');
+         imageAnalyseParahraph.innerText = 'TAGS: ' + comment.imageAnalyseResult;
+         imageAnalyseParahraph.style = "color:rgb(141, 140, 140);"
+         div.appendChild(imageAnalyseParahraph);
      }
 
      return div;
