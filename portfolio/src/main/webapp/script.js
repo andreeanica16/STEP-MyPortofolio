@@ -230,11 +230,15 @@
      });
      div.appendChild(deleteButtonElement);
 
-     if (comment.imageUrl !== undefined && comment.imageUrl !== null) {
-         let image = document.createElement('img');
-         image.src = comment.imageUrl;
-         image.style = "width:60px;height:60px";
-         div.appendChild(image);
+     if (comment.blobKey !== undefined && comment.blobKey !== null) {
+         fetch('/serveImage?blobKey=' + comment.blobKey)
+         .then(response => response.blob())
+         .then(myBlob => {
+             let image = document.createElement('img');
+             image.src = URL.createObjectURL(myBlob);
+             image.style = "width:60px;height:60px";
+             div.appendChild(image);
+         });
      }
 
      return div;
@@ -515,7 +519,7 @@ function drawChart() {
             'title': 'How much chocolate does we eat per year?',
             'width':700,
             'height':700,
-            colorAxis: {colors: ['gray', 'black']}
+            colorAxis: {colors: ['#FAF0E6', 'black']}
         };
         
         const chart = new google.visualization.GeoChart(

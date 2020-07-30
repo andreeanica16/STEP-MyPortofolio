@@ -59,14 +59,13 @@ public class DataServlet extends HttpServlet {
     int counter = 0; //Count the number of comments sent
     for (Entity entity : results.asIterable()) {
       long id = entity.getKey().getId();
-      //String username = (String) entity.getProperty("username");
       String subject = (String) entity.getProperty("subject");
       long timestamp = (long) entity.getProperty("timestamp");
       String email = (String) entity.getProperty("email");
       String username = getUsername(email);
-      String imageUrl = (String) entity.getProperty("imageUrl");
+      String blobKey = (String) entity.getProperty("blobKey");
 
-      Comment thisComment = new Comment(id, username, subject, email, imageUrl);
+      Comment thisComment = new Comment(id, username, subject, email, blobKey);
 
       database.add(thisComment);
       counter++;
@@ -94,14 +93,14 @@ public class DataServlet extends HttpServlet {
           String subject = request.getParameter("subject");
           long timestamp = System.currentTimeMillis();
           String email = userService.getCurrentUser().getEmail();
-          String imageUrl = getUploadedFileUrl(request, "image");
+          String blobKey = getBlobKey(request, "image");
           
           Entity comment = new Entity("Comment");
           comment.setProperty("username", username);
           comment.setProperty("subject", subject);
           comment.setProperty("timestamp", timestamp);
           comment.setProperty("email", email);
-          comment.setProperty("imageUrl", imageUrl);
+          comment.setProperty("blobKey", blobKey);
           
           DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
           datastore.put(comment);
@@ -127,7 +126,7 @@ public class DataServlet extends HttpServlet {
   }
   
   /** Returns a URL that points to the uploaded file, or null if the user didn't upload a file. */
-  private String getUploadedFileUrl(HttpServletRequest request, String formInputElementName) {
+  private String getBlobKey(HttpServletRequest request, String formInputElementName) {
     BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
     Map<String, List<BlobKey>> blobs = blobstoreService.getUploads(request);
     List<BlobKey> blobKeys = blobs.get("image");
@@ -154,7 +153,7 @@ public class DataServlet extends HttpServlet {
         blobstoreService.delete(blobKey);
         return null;
     }
-
+    /*
     // Use ImagesService to get a URL that points to the uploaded file.
     ImagesService imagesService = ImagesServiceFactory.getImagesService();
     ServingUrlOptions options = ServingUrlOptions.Builder.withBlobKey(blobKey);
@@ -167,5 +166,8 @@ public class DataServlet extends HttpServlet {
     } catch (MalformedURLException e) {
       return imagesService.getServingUrl(options);
     }
+    */
+    System.out.println(blobKey.getKeyString());
+    return blobKey.getKeyString();
   }
 }
