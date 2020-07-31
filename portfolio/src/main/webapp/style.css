@@ -22,6 +22,11 @@ header p {
   padding: 1px 140px 0 0;
 }
 
+#myHeader {
+  z-index: 99 !important;
+}
+
+
 nav {
   overflow:hidden;
   display: inline-block;
