@@ -27,7 +27,7 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/chocolate-data")
 public class ChocolateDataServlet extends HttpServlet {
 
-  private LinkedHashMap<String, Doubles> kilogramsPerCountry = new LinkedHashMap<>();
+  private LinkedHashMap<String, Double> kilogramsPerCountry = new LinkedHashMap<>();
 
   @Override
   public void init() {

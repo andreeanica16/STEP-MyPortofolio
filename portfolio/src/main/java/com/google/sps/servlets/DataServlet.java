@@ -39,6 +39,18 @@ import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
 import com.google.appengine.api.images.ImagesService;
 import com.google.appengine.api.images.ImagesServiceFactory;
 import com.google.appengine.api.images.ServingUrlOptions;
+import com.google.cloud.vision.v1.AnnotateImageRequest;
+import com.google.cloud.vision.v1.AnnotateImageResponse;
+import com.google.cloud.vision.v1.BatchAnnotateImagesResponse;
+import com.google.cloud.vision.v1.EntityAnnotation;
+import com.google.cloud.vision.v1.Feature;
+import com.google.cloud.vision.v1.Image;
+import com.google.cloud.vision.v1.ImageAnnotatorClient;
+import com.google.protobuf.ByteString;
+import java.io.ByteArrayOutputStream;
+import com.google.cloud.language.v1.Document;
+import com.google.cloud.language.v1.LanguageServiceClient;
+import com.google.cloud.language.v1.Sentiment;
 import com.google.sps.data.Comment;
 import com.google.sps.data.DataSent;
 
@@ -59,14 +71,16 @@ public class DataServlet extends HttpServlet {
     int counter = 0; //Count the number of comments sent
     for (Entity entity : results.asIterable()) {
       long id = entity.getKey().getId();
-      //String username = (String) entity.getProperty("username");
       String subject = (String) entity.getProperty("subject");
       long timestamp = (long) entity.getProperty("timestamp");
       String email = (String) entity.getProperty("email");
       String username = getUsername(email);
-      String imageUrl = (String) entity.getProperty("imageUrl");
+      String blobKey = (String) entity.getProperty("blobKey");
+      String imageAnalyseResult = (String) entity.getProperty("imageAnalyseResult");
+      double sentiment = (double) entity.getProperty("sentiment");
 
-      Comment thisComment = new Comment(id, username, subject, email, imageUrl);
+      Comment thisComment = new Comment(id, username, subject, email, blobKey, 
+                                          imageAnalyseResult, sentiment);
 
       database.add(thisComment);
       counter++;
@@ -94,14 +108,24 @@ public class DataServlet extends HttpServlet {
           String subject = request.getParameter("subject");
           long timestamp = System.currentTimeMillis();
           String email = userService.getCurrentUser().getEmail();
-          String imageUrl = getUploadedFileUrl(request, "image");
+          BlobKey blobKey = getBlobKey(request, "image");
+          String blobKeyString = null;
+          String imageAnalyseResult = null;
+          double sentiment = (double) getSentiment(subject);
+
+          if (blobKey != null) {
+              blobKeyString = blobKey.getKeyString();
+              imageAnalyseResult = getImageAnalysis(blobKey);
+          }
           
           Entity comment = new Entity("Comment");
           comment.setProperty("username", username);
           comment.setProperty("subject", subject);
           comment.setProperty("timestamp", timestamp);
           comment.setProperty("email", email);
-          comment.setProperty("imageUrl", imageUrl);
+          comment.setProperty("blobKey", blobKeyString);
+          comment.setProperty("imageAnalyseResult", imageAnalyseResult);
+          comment.setProperty("sentiment", sentiment);
           
           DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
           datastore.put(comment);
@@ -112,6 +136,17 @@ public class DataServlet extends HttpServlet {
       
   }
 
+  float getSentiment(String message) throws IOException {
+      Document doc =
+        Document.newBuilder().setContent(message).setType(Document.Type.PLAIN_TEXT).build();
+    LanguageServiceClient languageService = LanguageServiceClient.create();
+    Sentiment sentiment = languageService.analyzeSentiment(doc).getDocumentSentiment();
+    float score = sentiment.getScore();
+    languageService.close();
+
+    return score;
+  }
+  
   String getUsername(String email) {
       DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
       Query query =
@@ -127,7 +162,7 @@ public class DataServlet extends HttpServlet {
   }
   
   /** Returns a URL that points to the uploaded file, or null if the user didn't upload a file. */
-  private String getUploadedFileUrl(HttpServletRequest request, String formInputElementName) {
+  private BlobKey getBlobKey(HttpServletRequest request, String formInputElementName) {
     BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
     Map<String, List<BlobKey>> blobs = blobstoreService.getUploads(request);
     List<BlobKey> blobKeys = blobs.get("image");
@@ -154,7 +189,7 @@ public class DataServlet extends HttpServlet {
         blobstoreService.delete(blobKey);
         return null;
     }
-
+    /*
     // Use ImagesService to get a URL that points to the uploaded file.
     ImagesService imagesService = ImagesServiceFactory.getImagesService();
     ServingUrlOptions options = ServingUrlOptions.Builder.withBlobKey(blobKey);
@@ -167,5 +202,72 @@ public class DataServlet extends HttpServlet {
     } catch (MalformedURLException e) {
       return imagesService.getServingUrl(options);
     }
+    */
+    return blobKey;
   }
+
+  private String getImageAnalysis(BlobKey blobKey) throws IOException {
+    byte[] blobBytes = getBlobBytes(blobKey);
+    List<EntityAnnotation> imageLabels = getImageLabels(blobBytes);
+    String imageAnalyseResult = "";
+
+    for (EntityAnnotation label : imageLabels) {
+      imageAnalyseResult = imageAnalyseResult  + "#" + label.getDescription() + " ";
+    }
+
+    return imageAnalyseResult;
+  }
+
+  private byte[] getBlobBytes(BlobKey blobKey) throws IOException {
+    BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
+    ByteArrayOutputStream outputBytes = new ByteArrayOutputStream();
+
+    int fetchSize = BlobstoreService.MAX_BLOB_FETCH_SIZE;
+    long currentByteIndex = 0;
+    boolean continueReading = true;
+    while (continueReading) {
+      // end index is inclusive, so we have to subtract 1 to get fetchSize bytes
+      byte[] b =
+          blobstoreService.fetchData(blobKey, currentByteIndex, currentByteIndex + fetchSize - 1);
+      outputBytes.write(b);
+
+      // if we read fewer bytes than we requested, then we reached the end
+      if (b.length < fetchSize) {
+        continueReading = false;
+      }
+
+      currentByteIndex += fetchSize;
+    }
+
+    return outputBytes.toByteArray();
+  }
+
+  /**
+   * Uses the Google Cloud Vision API to generate a list of labels that apply to the image
+   * represented by the binary data stored in imgBytes.
+   */
+  private List<EntityAnnotation> getImageLabels(byte[] imgBytes) throws IOException {
+    ByteString byteString = ByteString.copyFrom(imgBytes);
+    Image image = Image.newBuilder().setContent(byteString).build();
+
+    Feature feature = Feature.newBuilder().setType(Feature.Type.LABEL_DETECTION).build();
+    AnnotateImageRequest request =
+        AnnotateImageRequest.newBuilder().addFeatures(feature).setImage(image).build();
+    List<AnnotateImageRequest> requests = new ArrayList<>();
+    requests.add(request);
+
+    ImageAnnotatorClient client = ImageAnnotatorClient.create();
+    BatchAnnotateImagesResponse batchResponse = client.batchAnnotateImages(requests);
+    client.close();
+    List<AnnotateImageResponse> imageResponses = batchResponse.getResponsesList();
+    AnnotateImageResponse imageResponse = imageResponses.get(0);
+
+    if (imageResponse.hasError()) {
+      System.err.println("Error getting image labels: " + imageResponse.getError().getMessage());
+      return null;
+    }
+
+    return imageResponse.getLabelAnnotationsList();
+  }
+
 }

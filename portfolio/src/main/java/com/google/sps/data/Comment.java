@@ -19,7 +19,9 @@ public final class Comment {
     public String username;
     public String subject;
     public String email;
-    public String imageUrl;
+    public String blobKey;
+    public String imageAnalyseResult;
+    public double sentiment;
 
     public Comment(long id, String username, String subject) {
         this.id = id;
@@ -27,9 +29,12 @@ public final class Comment {
         this.subject = subject;
     }
 
-    public Comment(long id, String username, String subject, String email, String imageUrl) {
+    public Comment(long id, String username, String subject, String email, String blobKey,
+                      String imageAnalyseResult, double sentiment) {
         this(id, username, subject);
         this.email = email;
-        this.imageUrl = imageUrl;
+        this.blobKey = blobKey;
+        this.imageAnalyseResult = imageAnalyseResult;
+        this.sentiment = sentiment;
     }
 }
