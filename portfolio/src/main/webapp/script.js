@@ -206,11 +206,12 @@
      let div = document.createElement('div');
 
      let myH3 = document.createElement('h3');
-     myH3.innerText = comment.username ;
+     myH3.innerText = getEmoji(comment.sentiment) +
+        ' ' + comment.username;
      div.appendChild(myH3);
 
      let myH5 = document.createElement('h5');
-     myH5.innerText =  comment.email + ' ' + comment.sentiment;
+     myH5.innerText =  comment.email;
      myH5.style = 'margin-top:-5px;'
      div.appendChild(myH5);
 
@@ -236,7 +237,7 @@
          .then(myBlob => {
              let image = document.createElement('img');
              image.src = URL.createObjectURL(myBlob);
-             image.style = "width:60px;height:60px";
+             image.style = "max-width:300px;max-height:300px";
              div.appendChild(image);
          });
 
@@ -255,10 +256,44 @@
      getComments();
  }
 
+/** Get emoji based on the user feelings */
+ function getEmoji(sentiment) {
+     if (sentiment > 0.8) {
+         return String.fromCodePoint(0x1F601);
+     }
+
+     if (sentiment > 0.5) {
+         return  String.fromCodePoint(0x1F604);
+     }
+
+     if (sentiment > 0.3) {
+         return String.fromCodePoint(0x1F600);
+     }
+
+     if (sentiment > 0) {
+         return String.fromCodePoint(0x1F642);
+     }
+
+     if (sentiment > -0.3) {
+         return String.fromCodePoint(0x1F641);
+     }
+
+     if (sentiment > -0.5) {
+         return String.fromCodePoint(0x1F61F);
+     }
+
+     if (sentiment > -0.8) {
+         return String.fromCodePoint(0x1F61E);
+     }
+
+     return String.fromCodePoint(0x1F625);
+ }
+
  function deleteAllComments() {
      let request = new Request('/delete-data', {method: 'POST'});
      fetch(request).then(getComments);
  }
+
 
  /** Tells the server to delete the task. */
  function deleteComment(comment) {
