@@ -22,17 +22,30 @@ import java.util.Iterator;
 
 public final class FindMeetingQuery {
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
-    SortedSet<TimeRange> filteredTimeRanges = filterEvents(events, request);
     int duration = new Long(request.getDuration()).intValue();
+    Collection<String> allAttendees = new ArrayList(request.getAttendees());
+    allAttendees.addAll(request.getOptionalAttendees());
+
+    Collection<TimeRange> includeOptionalAttendees = solveQueryforAttendees(events, allAttendees, duration);
+
+    if (includeOptionalAttendees.isEmpty()) {
+        return solveQueryforAttendees(events, request.getAttendees(), duration);
+    } else {
+        return includeOptionalAttendees;
+    }
+  }
+
+  public Collection<TimeRange> solveQueryforAttendees(Collection<Event> events, Collection<String> attendees, int duration) {
+    SortedSet<TimeRange> filteredTimeRanges = filterEvents(events, attendees);
     Collection<TimeRange> allPossibleIntervals = emptyIntervals(filteredTimeRanges, duration);
     
     return allPossibleIntervals;
-
   }
+
   // If the event has at least one common attendee as the request
   // return true. Otherwise return false
-  public boolean needsAttendeeFromOtherEvent(Event event, MeetingRequest request) {
-      for (String attendee : request.getAttendees()) {
+  public boolean needsAttendeeFromOtherEvent(Event event, Collection<String> attendees) {
+      for (String attendee : attendees) {
           if (event.getAttendees().contains(attendee)) {
               return true;
           }
@@ -44,14 +57,14 @@ public final class FindMeetingQuery {
   // Filter from all the events just the ones that have at least one
   // attendee from the event we are trying to build (the remaing do 
   // not influence our choice)
-  public SortedSet<TimeRange> filterEvents(Collection<Event> events, MeetingRequest request) {
+  public SortedSet<TimeRange> filterEvents(Collection<Event> events, Collection<String> attendees) {
       // Builds a set of timeRanges sorted by the start
       // Reduce time complexity to build it as we find elements, than to
       // sort it afterwards 
       TreeSet<TimeRange> filteredTimeRanges = new TreeSet<>(TimeRange.ORDER_BY_START);
 
       for (Event event : events) {
-          if (needsAttendeeFromOtherEvent(event, request)) {
+          if (needsAttendeeFromOtherEvent(event, attendees)) {
               filteredTimeRanges.add(event.getWhen());
           }
       }
