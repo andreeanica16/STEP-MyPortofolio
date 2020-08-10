@@ -12,6 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+var myKey = config.MY_KEY;
+
+var myScript = document.createElement('script');
+myScript.setAttribute('src','https://maps.googleapis.com/maps/api/js?key=' + myKey);
+document.head.appendChild(myScript);
 
 /*
  * Define the background and the characteristics of the
